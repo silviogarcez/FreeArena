@@ -1,33 +1,32 @@
 ﻿using Assets.Scripts.Players.Abstractions.Interfaces;
-using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Players.Abstractions
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class Jump : IJump
     {
-        public void BackJump()
+        private readonly Player person;                
+        public float groundDistance { get; set; } = 0.5f;
+
+        public Jump(Player person)
         {
-            throw new NotImplementedException();
+            this.person = person;            
         }
 
-        public void FrontJump()
+        public void Jumping(float jumpForce)
         {
-            throw new NotImplementedException();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                person.Rigidbody.velocity = Vector3.up * jumpForce;
+                //person.Rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);                
+            }            
+
         }
 
-        public void LeftJump()
+        public bool IsGrounded()
         {
-            throw new NotImplementedException();
-        }
-
-        public void RightJump()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IJump.Jump()
-        {
-            throw new NotImplementedException();
+            return Physics.Raycast(person.Transform.position, Vector3.down, groundDistance);
         }
     }
 }

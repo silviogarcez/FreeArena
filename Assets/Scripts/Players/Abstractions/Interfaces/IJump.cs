@@ -2,10 +2,8 @@
 {
     public interface IJump
     {
-        public void Jump();
-        public void RightJump();
-        public void LeftJump();
-        public void BackJump();
-        public void FrontJump();
+        public void Jumping(float jumpForce);
+
+        public bool IsGrounded();
     }
 }

@@ -5,16 +5,12 @@ namespace Assets.Scripts.Players.Abstractions
 {
     public class Walk : IWalk
     {
-        private CharacterController character;
-        private Animator animator;
-        private Transform transform;
+        private readonly Player person;                
         private Vector3 inputs;
 
         public Walk(Player person)
         {
-            character = person.Character;
-            animator = person.Animator;
-            transform = person.Transform;
+            this.person = person;            
         }
 
         public void Walking(float velocidade)
@@ -25,18 +21,16 @@ namespace Assets.Scripts.Players.Abstractions
             //var direction = new Vector3(horizontal, 0, vertical);
 
             inputs.Set(horizontal, 0, vertical);
-            character.Move(inputs * time * velocidade);
-            character.Move(Vector3.down * time);
+            person.Character.Move(inputs * time * velocidade);
+            //person.Character.Move(Vector3.down * time);
 
             if (inputs != Vector3.zero)
             {
-                animator.SetBool("Walking", true);
+                person.Animator.SetBool("Walking", true);
                 //transform.forward = Vector3.Slerp(transform.forward, inputs, time * 10);
             }
             else
-                animator.SetBool("Walking", false);
-
-            
+                person.Animator.SetBool("Walking", false);
         }
     }
 }

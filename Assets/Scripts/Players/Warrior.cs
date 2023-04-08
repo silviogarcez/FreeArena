@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Assets.Scripts.Players
 {
@@ -6,16 +7,19 @@ namespace Assets.Scripts.Players
     {
         private CharacterController character;
         private Animator animator;
+        private Rigidbody rigidbody;
         private Player person;
         float velocidade = 5;
-        private Vector3 inputs;
+        float jumpForce = 7f;        
         public Controls controls;
 
         void Start()
         {
             character = GetComponent<CharacterController>();
             animator = GetComponent<Animator>();
-            person = new Player(character, animator, transform, velocidade);
+            rigidbody = GetComponent<Rigidbody>();
+
+            person = new Player(character, animator, transform, rigidbody, velocidade, jumpForce);
         }
 
         // Update is called once per frame

@@ -9,16 +9,22 @@ namespace Assets.Scripts.Players
         public CharacterController Character { get; }
         public Animator Animator { get; }
         public Transform Transform { get; }
+        public Rigidbody Rigidbody { get; }
         public float Velocidade { get; }
-        private Walk walk { get; set; }        
+        public float JumpForce { get; }
+        private Walk walk { get; set; }
+        private Jump jump { get; set; }
 
-        public Player(CharacterController character, Animator animator, Transform transform, float velocidade)
+        public Player(CharacterController character, Animator animator, Transform transform, Rigidbody rigidbody, float velocidade, float jumpForce)
         {
             Character = character;
             Animator = animator;
             Transform = transform;
+            Rigidbody = rigidbody;
             Velocidade = velocidade;
+            JumpForce = jumpForce;
             walk = new Walk(this);
+            jump = new Jump(this);
         }
 
         private void Idle()
@@ -28,8 +34,9 @@ namespace Assets.Scripts.Players
 
         public void Actions()
         {
-            Idle();
+            //Idle();
             walk.Walking(Velocidade);
+            jump.Jumping(JumpForce);
         }
     }
 }

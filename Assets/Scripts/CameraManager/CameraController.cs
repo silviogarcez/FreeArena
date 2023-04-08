@@ -8,8 +8,6 @@ namespace Assets.Scripts.Cameras
         public float rotationY { get; set; } = 0f;
         public float sens { get; set; } = 2f;        
 
-        
-
         // Start is called before the first frame update
         void Start()
         {
@@ -17,8 +15,7 @@ namespace Assets.Scripts.Cameras
             Debug.Log("X:" + transform.position.x);
             Debug.Log("Y:" + transform.position.y);
             rotationX = transform.position.x;
-            rotationY = transform.position.y;
-            //transform.localRotation = = Vector3()
+            rotationY = transform.position.y;            
         }
 
         // Update is called once per frame
@@ -29,8 +26,6 @@ namespace Assets.Scripts.Cameras
                 rotationX += Input.GetAxis("Mouse X") * sens;
                 rotationY += Input.GetAxis("Mouse Y") * sens;
                 transform.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
-                //Debug.Log("X:" + transform.position.x);
-                //Debug.Log("Y:" + transform.position.x);
             }
         }
     }
