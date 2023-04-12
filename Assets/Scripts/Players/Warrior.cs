@@ -6,20 +6,18 @@ namespace Assets.Scripts.Players
     public class Warrior : MonoBehaviour
     {
         private CharacterController character;
-        private Animator animator;
-        private Rigidbody rigidbody;
+        private Animator animator;        
         private Player person;
-        float velocidade = 9;
+        float velocidade = 5;
         float jumpForce = 10f;        
         public Controls controls;
 
         void Start()
         {
             character = GetComponent<CharacterController>();
-            animator = GetComponent<Animator>();
-            rigidbody = GetComponent<Rigidbody>();
+            animator = GetComponent<Animator>();            
 
-            person = new Player(character, animator, transform, rigidbody, velocidade, jumpForce);
+            person = new Player(character, animator, transform, velocidade, jumpForce);
         }
 
         // Update is called once per frame

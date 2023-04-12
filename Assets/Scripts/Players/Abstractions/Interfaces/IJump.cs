@@ -2,6 +2,8 @@
 {
     public interface IJump
     {
-        public float Jumping(float jumpForce, float gravityValue);        
+        public float Jumping(float jumpForce, float gravityValue);
+
+        public bool JumpingValidation();
     }
 }

@@ -1,23 +1,24 @@
 ﻿using Assets.Scripts.Players.Abstractions.Interfaces;
+using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Assets.Scripts.Players.Abstractions
 {
     public class Walk : IWalk
     {
-        private readonly Player person;
+        private readonly Player player;
 
         private readonly IJump jump;        
         public float gravityValue { get; set; } = -9.81f * 3;
-        public float groundDistance { get; set; } = 0.5f;
+        
         public float jumpForce { get; set; } = 3f;
 
         Vector3 velocity;
 
-        public Walk(Player person)
+        public Walk(Player player)
         {
-            this.person = person;
-            this.jump = new Jump();
+            this.player = player;
+            this.jump = new Jump(player);
         }
 
         public void Walking(float velocidade)
@@ -26,33 +27,35 @@ namespace Assets.Scripts.Players.Abstractions
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
 
-            var direction = person.Transform.right * horizontal + person.Transform.forward * vertical;
+            var direction = player.Transform.right * horizontal + player.Transform.forward * vertical;
 
-            if (IsGrounded() && velocity.y < 0)
+            if (player.IsGrounded() && velocity.y < 0)
                 velocity.y = -2f;
 
-            person.Character.Move(direction * time * velocidade);
+            player.Character.Move(direction * time * velocidade);
 
-            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            if (jump.JumpingValidation())
             {                
                 velocity.y = jump.Jumping(jumpForce, gravityValue);
             }
             else
             {
-                if (horizontal != 0 && vertical != 0)
-                    person.Animator.SetBool("Walking", true);
-                else
-                    person.Animator.SetBool("Walking", false);
+                player.Animator.SetBool("Walking", true);
+                //if (horizontal != 0 && vertical != 0)
+                //    person.Animator.SetBool("Walking", true);
+                //else
+                    
             }
+            //person.Animator.SetBool("Jumping", false);
 
             velocity.y += gravityValue * time;
 
-            person.Character.Move(velocity * time);                
+            player.Character.Move(velocity * time);
+
+            
+
         }
 
-        public bool IsGrounded()
-        {
-            return Physics.Raycast(person.Transform.position, Vector3.down, groundDistance);
-        }
+
     }
 }
