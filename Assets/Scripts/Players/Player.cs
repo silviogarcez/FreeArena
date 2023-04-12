@@ -12,8 +12,7 @@ namespace Assets.Scripts.Players
         public Rigidbody Rigidbody { get; }
         public float Velocidade { get; }
         public float JumpForce { get; }
-        private Walk walk { get; set; }
-        private Jump jump { get; set; }
+        private Walk walk { get; set; }        
 
         public Player(CharacterController character, Animator animator, Transform transform, Rigidbody rigidbody, float velocidade, float jumpForce)
         {
@@ -21,22 +20,14 @@ namespace Assets.Scripts.Players
             Animator = animator;
             Transform = transform;
             Rigidbody = rigidbody;
-            Velocidade = velocidade;
+            Velocidade = velocidade; 
             JumpForce = jumpForce;
-            walk = new Walk(this);
-            jump = new Jump(this);
-        }
-
-        private void Idle()
-        {
-            //throw new System.NotImplementedException();
+            walk = new Walk(this);            
         }
 
         public void Actions()
-        {
-            //Idle();
+        {            
             walk.Walking(Velocidade);
-            jump.Jumping(JumpForce);
         }
     }
 }

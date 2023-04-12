@@ -1,31 +1,26 @@
+using Assets.Scripts.Players;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Cameras
 {
     public class CameraController : MonoBehaviour
     {
-        public float rotationX { get; set; } = 0f;
-        public float rotationY { get; set; } = 0f;
+        public float rotationX { get; set; } = 0;
+        public float rotationY { get; set; } = 0;
         public float sens { get; set; } = 2f;        
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-            Debug.Log("X:" + transform.position.x);
-            Debug.Log("Y:" + transform.position.y);
-            rotationX = transform.position.x;
-            rotationY = transform.position.y;            
-        }
+        public GameObject Player { get; set; }
 
         // Update is called once per frame
         void Update()
         {
             if (Input.GetMouseButton(1))
-            {                
+            {
+                Player = GameObject.Find("Warrior");
                 rotationX += Input.GetAxis("Mouse X") * sens;
                 rotationY += Input.GetAxis("Mouse Y") * sens;
-                transform.localRotation = Quaternion.Euler(-rotationY, rotationX, 0);
+                transform.localRotation = Quaternion.Euler(-rotationY, rotationX, 0).normalized;
+                Player.transform.rotation = Quaternion.Euler(0, 0, Camera.main.transform.forward.z);
             }
         }
     }

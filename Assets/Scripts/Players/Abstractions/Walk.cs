@@ -5,12 +5,19 @@ namespace Assets.Scripts.Players.Abstractions
 {
     public class Walk : IWalk
     {
-        private readonly Player person;                
-        private Vector3 inputs;
+        private readonly Player person;
+
+        private readonly IJump jump;        
+        public float gravityValue { get; set; } = -9.81f * 3;
+        public float groundDistance { get; set; } = 0.5f;
+        public float jumpForce { get; set; } = 3f;
+
+        Vector3 velocity;
 
         public Walk(Player person)
         {
-            this.person = person;            
+            this.person = person;
+            this.jump = new Jump();
         }
 
         public void Walking(float velocidade)
@@ -18,19 +25,34 @@ namespace Assets.Scripts.Players.Abstractions
             var time = Time.deltaTime;
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
-            //var direction = new Vector3(horizontal, 0, vertical);
 
-            inputs.Set(horizontal, 0, vertical);
-            person.Character.Move(inputs * time * velocidade);
-            //person.Character.Move(Vector3.down * time);
+            var direction = person.Transform.right * horizontal + person.Transform.forward * vertical;
 
-            if (inputs != Vector3.zero)
-            {
-                person.Animator.SetBool("Walking", true);
-                //transform.forward = Vector3.Slerp(transform.forward, inputs, time * 10);
+            if (IsGrounded() && velocity.y < 0)
+                velocity.y = -2f;
+
+            person.Character.Move(direction * time * velocidade);
+
+            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            {                
+                velocity.y = jump.Jumping(jumpForce, gravityValue);
             }
             else
-                person.Animator.SetBool("Walking", false);
+            {
+                if (horizontal != 0 && vertical != 0)
+                    person.Animator.SetBool("Walking", true);
+                else
+                    person.Animator.SetBool("Walking", false);
+            }
+
+            velocity.y += gravityValue * time;
+
+            person.Character.Move(velocity * time);                
+        }
+
+        public bool IsGrounded()
+        {
+            return Physics.Raycast(person.Transform.position, Vector3.down, groundDistance);
         }
     }
 }

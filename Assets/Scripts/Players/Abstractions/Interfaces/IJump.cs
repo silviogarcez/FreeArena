@@ -2,8 +2,6 @@
 {
     public interface IJump
     {
-        public void Jumping(float jumpForce);
-
-        public bool IsGrounded();
+        public float Jumping(float jumpForce, float gravityValue);        
     }
 }

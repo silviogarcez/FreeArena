@@ -9,8 +9,8 @@ namespace Assets.Scripts.Players
         private Animator animator;
         private Rigidbody rigidbody;
         private Player person;
-        float velocidade = 5;
-        float jumpForce = 7f;        
+        float velocidade = 9;
+        float jumpForce = 10f;        
         public Controls controls;
 
         void Start()
